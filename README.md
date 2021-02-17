@@ -1,0 +1,2 @@
+# lib
+kumpulan library go
