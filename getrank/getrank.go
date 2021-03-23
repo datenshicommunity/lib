@@ -6,7 +6,7 @@ import (
 	"gopkg.in/thehowl/go-osuapi.v1"
 )
 
-const silver = osuapi.ModFlashlight | osuapi.ModHidden
+const silver = osuapi.ModFlashlight | osuapi.ModHidden | osuapi.ModFadeIn
 
 // GetRank retrieves a rank of a score with the passed arguments.
 func GetRank(gameMode osuapi.Mode, mods osuapi.Mods, acc float64, c300, c100, c50, cmiss int) string {
@@ -35,17 +35,11 @@ func GetRank(gameMode osuapi.Mode, mods osuapi.Mods, acc float64, c300, c100, c5
 
 	case osuapi.ModeCatchTheBeat:
 		if acc == 100 {
-			if mods&silver > 0 {
-				return "sshd"
-			}
-			return "ss"
+			return s(true, mods)
 		}
 
 		if acc >= 98.01 && acc <= 99.99 {
-			if mods&silver > 0 {
-				return "shd"
-			}
-			return "s"
+			return s(false, mods)
 		}
 
 		if acc >= 94.01 && acc <= 98.00 {
@@ -65,15 +59,9 @@ func GetRank(gameMode osuapi.Mode, mods osuapi.Mods, acc float64, c300, c100, c5
 	case osuapi.ModeOsuMania:
 		switch {
 		case acc == 100:
-			if mods&silver > 0 {
-				return "sshd"
-			}
-			return "ss"
+			return s(true, mods)
 		case acc > 95:
-			if mods&silver > 0 {
-				return "shd"
-			}
-			return "s"
+			return s(false, mods)
 		case acc > 90:
 			return "a"
 		case acc > 80:
